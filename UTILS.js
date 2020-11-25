@@ -65,7 +65,6 @@ function deletePassengers(sheet, passengers) {
     }
 }
 
-
 function getSelectedPassengers(sheet) {
     return getPassengers(sheet).filter(ps => ps.getSelectedFlag());
 }
@@ -220,4 +219,20 @@ function getActiveUserEmailFromSpreadSheet(spreadSheet) {
 
     return userMail;
 
+}
+
+function generateId() {
+    return '_' + Math.random().toString(36).substr(2, 9);
+}
+
+function generateUniId() {
+    function chr4() {
+        return Math.random().toString(16).slice(-4);
+    }
+
+    return chr4() + chr4() +
+        '-' + chr4() +
+        '-' + chr4() +
+        '-' + chr4() +
+        '-' + chr4() + chr4() + chr4();
 }
