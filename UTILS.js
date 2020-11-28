@@ -152,6 +152,13 @@ function generatePassengerRangesA1Notations() {
 }
 
 
+function setIdToPassengers(passArr) {
+    for (var pass in passArr) {
+        passArr[pass].setId(generateUniId())
+    }
+    return passArr;
+}
+
 function getPassengers(sheet) {
 
     var arrPass = [];

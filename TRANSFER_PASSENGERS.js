@@ -59,6 +59,10 @@ function TRANSFER_PASSENGERS() {
 
 }
 
+function getPassengersFromPassList(passList){
+
+
+}
 
 function getAutoLinkMap(checkList, autoLinkRange) {
 

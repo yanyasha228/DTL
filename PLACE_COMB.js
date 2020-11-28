@@ -11,7 +11,6 @@ function genComb() {
 
     var citArr = [];
 
-
     totalCitiesAmountRange = sheet.getRange(totalCitiesAmountRangeA1Notation);
     totalCitiesAmountRangeValue = Number.parseInt(totalCitiesAmountRange.getValue());
 
