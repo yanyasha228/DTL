@@ -181,6 +181,15 @@ function getPassengers(sheet) {
 
 }
 
+function generatePassengersIds(sheet){
+
+    var passng = getValidPassengers(sheet);
+
+    var passesWithoutId = passng.filter(x => x.id == "");
+
+    return passesWithoutId;
+}
+
 
 function removeSelectionsFromPassengers(sheet, passengers) {
     for (pas in passengers) {
