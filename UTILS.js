@@ -181,11 +181,28 @@ function getPassengers(sheet) {
 
 }
 
-function generatePassengersIds(sheet){
+function getIdPassengerMap(passArr) {
+    var idPassMap = new Map();
+    for (var ps in passArr) {
+        idPassMap.set(passArr[ps].getId(), passArr[ps]);
+    }
+    return idPassMap;
+}
 
-    var passng = getValidPassengers(sheet);
+function generatePassengersIdsIfNotExist(sheet, passArr) {
+    var passng = passArr;
+    // if (passArr != undefined && passArr.length > 0) {
+    //     passng = passArr;
+    // } else {
+    //     passng = getValidPassengers(sheet);
+    // }
+    var passesWithoutId = passng.filter(x => x.getId().replace(/\s+/g, '') == "");
 
-    var passesWithoutId = passng.filter(x => x.id == "");
+    for (var p in passesWithoutId) {
+        var pass = passesWithoutId[p];
+        pass.setId(generateUniId());
+        sheet.getRange(pass.getIdLink()).setValue(pass.getId());
+    }
 
     return passesWithoutId;
 }

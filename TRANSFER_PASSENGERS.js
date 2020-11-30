@@ -5,6 +5,7 @@ function TRANSFER_PASSENGERS() {
     var currentTripSheetName = sheet.getName();
     var sheetCheck = SpreadsheetApp.getActive().getSheetByName("CHECKLIST");
 
+
     const autoLinkRange = "U2:W12";
     const autoNameRange = "Q2";
     const driverNameRange = "R2";
@@ -24,11 +25,29 @@ function TRANSFER_PASSENGERS() {
 
     var spreadsheetForTransfer = SpreadsheetApp.openByUrl(spreadsheetUrlToTransfer);
 
-    var sheetToFill = spreadsheetForTransfer.getSheetByName("SAMPLE_T").copyTo(spreadsheetForTransfer);
+    var sheetToFill = spreadsheetForTransfer.getSheetByName(currentTripSheetName);
 
-    sheetToFill.setName(currentTripSheetName);
+    if (sheetToFill == undefined) {
+        sheetToFill = spreadsheetForTransfer.getSheetByName("SAMPLE_T").copyTo(spreadsheetForTransfer);
+
+        sheetToFill.setName(currentTripSheetName);
+    }
 
     var tripPassengers = getValidPassengers(sheet);
+
+    generatePassengersIdsIfNotExist(sheet, tripPassengers);
+
+    var passIOP = getPassengersFromPassList(sheetToFill);
+
+    if (passIOP.length > 0) {
+        var passMap = getIdPassengerMap(passIOP);
+        for (var psSh in tripPassengers) {
+            var currPass = tripPassengers[psSh];
+            if (passMap.has(currPass.getId())) {
+                currPass.setPresence(passMap.get(currPass.getId()).getPresence());
+            }
+        }
+    }
 
     tripPassengers.sort(function (a, b) {
         if (a.getDeparturePoint() < b.getDeparturePoint()) {
@@ -45,24 +64,47 @@ function TRANSFER_PASSENGERS() {
     for (var passToShow in tripPassengers) {
         passObjectList.push(passengerToParamList(tripPassengers[passToShow]));
     }
-    var rangeToSeTPassArr = "A2:J" + (passObjectList.length + 1);
+    var rangeToSeTPassArr = "A2:K" + (passObjectList.length + 1);
+
+    var rangeToClear = "A" + (passObjectList.length + 2) + ":K300";
 
     sheetToFill.getRange(rangeToSeTPassArr).setValues(passObjectList);
 
+    sheetToFill.getRange(rangeToClear).clearContent();
+}
 
-    function passengerToParamList(pass) {
-        var priceVar = pass.getPrice();
-        if(pass.getPaymentOption() == "БЕЗНАЛ") priceVar = "";
-        var objList = [pass.getPlaceNumber(), "false", pass.getDeparturePoint(), pass.getPlaceOfArrival(), pass.getFullName(), pass.getPhoneNumber(), pass.getPaymentOption(), priceVar, pass.getComment(), pass.getTicketId()];
-        return objList;
+function passengerToParamList(pass) {
+    var priceVar = pass.getPrice();
+    if (pass.getPaymentOption() == "БЕЗНАЛ") priceVar = "";
+    var objList = [pass.getPlaceNumber(), pass.getPresence(), pass.getDeparturePoint(), pass.getPlaceOfArrival(), pass.getFullName(), pass.getPhoneNumber(), pass.getPaymentOption(), priceVar, pass.getComment(), pass.getTicketId(), pass.getId()];
+    return objList;
+}
+
+function getPassengersFromPassList(passList) {
+
+    var passObjs = passList.getRange("A2:K300").getValues().filter(x => x[10].replace(/\s+/g, '') != "");
+
+    var passArr = [];
+
+    for (var passx in passObjs) {
+        var currRow = passObjs[passx];
+        var passengerToAdd = new Passenger();
+        passengerToAdd.setPlaceNumber(currRow[0]);
+        passengerToAdd.setPresence(currRow[1]);
+        passengerToAdd.setDeparturePoint(currRow[2]);
+        passengerToAdd.setPlaceOfArrival(currRow[3]);
+        passengerToAdd.setFullName(currRow[4]);
+        passengerToAdd.setPhoneNumber(currRow[5]);
+        passengerToAdd.setPaymentOption(currRow[6]);
+        passengerToAdd.setPrice(currRow[7]);
+        passengerToAdd.setComment(currRow[8]);
+        passengerToAdd.setTicketId(currRow[9]);
+        passengerToAdd.setId(currRow[10]);
+        passArr.push(passengerToAdd);
     }
-
+    return passArr;
 }
 
-function getPassengersFromPassList(passList){
-
-
-}
 
 function getAutoLinkMap(checkList, autoLinkRange) {
 

@@ -304,13 +304,15 @@ function Passenger(departurePointLink,
 
     this.id;
 
+    this.presence = false;
+
     this.transferTripNameStart;
 
     this.transferTripNameEnd;
 
-    this.transferTripNameStartLink;
+    this.transferTripNameStartLink = transferTripNameStartLink;
 
-    this.transferTripNameEndLink;
+    this.transferTripNameEndLink = transferTripNameEndLink;
 
     this.selectedFlag;
 
@@ -343,17 +345,21 @@ function Passenger(departurePointLink,
 
 Passenger.prototype = Object.create(Cell.prototype);
 
-Passenger.prototype.setTransferTripNameEnd = function (transferTripNameEnd){
+Passenger.prototype.setPresence = function (presence) {
+    this.presence = presence;
+}
+
+Passenger.prototype.setTransferTripNameEnd = function (transferTripNameEnd) {
     this.transferTripNameEnd = transferTripNameEnd;
 }
-Passenger.prototype.setTransferTripNameStart = function (transferTripNameStart){
+Passenger.prototype.setTransferTripNameStart = function (transferTripNameStart) {
     this.transferTripNameStart = transferTripNameStart;
 }
 
-Passenger.prototype.setTransferTripNameEndLink = function (transferTripNameEndLink){
+Passenger.prototype.setTransferTripNameEndLink = function (transferTripNameEndLink) {
     this.transferTripNameEndLink = transferTripNameEndLink;
 }
-Passenger.prototype.setTransferTripNameStartLink = function (transferTripNameStartLink){
+Passenger.prototype.setTransferTripNameStartLink = function (transferTripNameStartLink) {
     this.transferTripNameStartLink = transferTripNameStartLink;
 }
 
@@ -402,17 +408,21 @@ Passenger.prototype.setSourceIdLink = function (sourceLink) {
     this.sourceIdLink = sourceLink;
 };
 
-Passenger.prototype.getTransferTripNameEnd = function (){
+Passenger.prototype.getPresence = function () {
+    return this.presence;
+}
+
+Passenger.prototype.getTransferTripNameEnd = function () {
     return this.transferTripNameEnd;
 }
-Passenger.prototype.getTransferTripNameStart = function (){
+Passenger.prototype.getTransferTripNameStart = function () {
     return this.transferTripNameStart;
 }
 
-Passenger.prototype.getTransferTripNameEndLink = function (){
+Passenger.prototype.getTransferTripNameEndLink = function () {
     return this.transferTripNameEndLink;
 }
-Passenger.prototype.getTransferTripNameStartLink = function (){
+Passenger.prototype.getTransferTripNameStartLink = function () {
     return this.transferTripNameStartLink;
 }
 
