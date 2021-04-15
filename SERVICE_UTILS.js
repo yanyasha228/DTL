@@ -42,6 +42,7 @@ function MAKE_WORKSHEETS() {
                 var tz = spreadsheet.getSheetByName(sampleSheetName);
                 var mz = tz.copyTo(spreadsheet);
                 mz.setName(genSheetName);
+                mz.getRange("A1:B1").setValue(genSheetName);
             }
 
         }

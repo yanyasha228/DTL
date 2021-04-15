@@ -76,7 +76,7 @@ function TRANSFER_PASSENGERS() {
 function passengerToParamList(pass) {
     var priceVar = pass.getPrice();
     if (pass.getPaymentOption() == "БЕЗНАЛ") priceVar = "";
-    var objList = [pass.getPlaceNumber(), pass.getPresence(), pass.getDeparturePoint(), pass.getPlaceOfArrival(), pass.getFullName(), pass.getPhoneNumber(), pass.getPaymentOption(), priceVar, pass.getComment(), pass.getTicketId(), pass.getId()];
+    var objList = [pass.getPlaceNumber(), pass.getPresence(), (pass.getDeparturePoint() === 'Одесса(Лузановка)') ? 'Новофёдоровка' : pass.getDeparturePoint(), pass.getPlaceOfArrival(), pass.getFullName(), pass.getPhoneNumber(), pass.getPaymentOption(), priceVar, pass.getComment(), pass.getTicketId(), pass.getId()];
     return objList;
 }
 
